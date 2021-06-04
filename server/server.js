@@ -3,6 +3,27 @@ const express = require('express');
 const {ApolloServer} = require ('apollo-server-express')
 const http = require('http');
 
+/* INCLUDING MONGOOSE */
+const mongoose = require('mongoose');
+// Connecting Db
+const db = async ()=>{
+    try{
+        //EZala8QZznO1O97X
+        const success = await mongoose.connect('mongodb+srv://AwaisSikander:EZala8QZznO1O97X@graphqlreactnode.qundn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true,
+            useFindAndModify: false
+        });
+        console.log('DB Connected')
+    }catch(e){
+        console.log('DB Connection Error',e)
+    }
+}
+// Execute DB connection 
+
+db();
+
 /* .env variables */
 require('dotenv').config();
 
@@ -27,6 +48,7 @@ app.get('/rest',function (req,res) {
 /* Port */
 app.listen(process.env.PORT,function(){
     console.log(`server is ready at http://localhost:${process.env.PORT}`);
+    console.log(`BD ---- ${process.env.DATABASE_CLOUD}`);
     console.log(`graphql server is ready at http://localhost:${process.env.PORT}${apolloServer.graphqlPath}`);
 })
 

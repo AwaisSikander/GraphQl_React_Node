@@ -12,7 +12,8 @@
   "dependencies": {
     "@graphql-toolkit/schema-merging": "^0.10.7",
     "@graphql-tools/load-files": "^6.3.2",
-    "apollo-server": "^2.25.0",
+    "apollo-server": "^0.3.3",
+    "apollo-server-express": "^2.25.0",
     "graphql": "^15.5.0",
     "graphql-tools": "^7.0.5"
   }
