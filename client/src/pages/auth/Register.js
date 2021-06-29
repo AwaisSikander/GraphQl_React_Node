@@ -1,11 +1,26 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
+import { auth } from "../../firebase";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [loading, setloading] = useState(false);
-  function handleSubmit() {
-    //Will be implemented later
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setloading(true);
+    const config = {
+      url: process.env.REACT_APP_CONFIRMATION_REDIRECT,
+      handleCodeInApp: true,
+    };
+    const result = await auth.sendSignInLinkToEmail(email, config);
+    console.log(result);
+    // Show Toast Notification To User about email sent
+
+    // Save User Email to Local Storage
+    window.localStorage.setItem('emailFormRegistration' , email)
+    /* Clear Email State */
+    setEmail('');
+    setloading(false)
+  };
   return (
     <div className="contianer ">
       <div className="row p-5">
@@ -18,11 +33,16 @@ const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="form-control"
-              placeholder="Enter email"
+              placeholder="Enter Email"
               disabled={loading}
             />
           </div>
-          <button className="btn btn-raised btn-primary mt-2" disabled={!email || loading}>Submit</button>
+          <button
+            className="btn btn-raised btn-primary mt-2"
+            disabled={!email || loading}
+          >
+            Submit
+          </button>
         </form>
       </div>
     </div>

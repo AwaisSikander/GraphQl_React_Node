@@ -1,14 +1,4 @@
-{
-  /* <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script> */
-}
-//
-{
-  /* <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-analytics.js"></script> */
-}
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-import * as firebase from "firebase";
+import firebase from "firebase";
 var firebaseConfig = {
   apiKey: "AIzaSyBYIeLYiByI6G7y5Nkb_tTE5zlfywHc7BU",
   authDomain: "gqlreactnode00786.firebaseapp.com",
@@ -21,5 +11,16 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-export const auth = firebase.auth();
-export const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
+const auth = firebase.auth();
+const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
+export {auth,googleAuthProvider}
+{
+  /* <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script> */
+}
+//
+{
+  /* <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-analytics.js"></script> */
+}
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
