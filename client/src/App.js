@@ -14,6 +14,8 @@ import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
+import { ToastContainer } from "react-toastify";
+
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GQL_ENDPOINT,
@@ -24,6 +26,7 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <Nav />
+      <ToastContainer />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/register" component={Register} />
