@@ -8,12 +8,36 @@ const CompleteRegistration = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   let history = useHistory();
-  const handleSubmit = () => {
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    // Validation
+    if (!email || !password) {
+      toast.error("Email and Password is required");
+      return;
+    }
+    try {
+      const result = await auth.signInWithEmailLink(
+        email,
+        window.location.href
+      );
+      if (result.user.emailVerified) {
+        // Remove Email From Local Storage
+        window.localStorage.removeItem('emailForRegistration')
+        let user = auth.currentUser;
+        await user.updatePassword(password)
+        // Dispatch User With Token
+        // Then Redirect
+      }
+    } catch (error) {
+      console.log("register complete error", error.message);
+      setLoading(false);
+      toast.error(error.message);
+    }
   };
   useEffect(() => {
-    setEmail(window.localStorage.getItem('emailForRegistration'))
-  }, [history])
+    setEmail(window.localStorage.getItem("emailForRegistration"));
+  }, [history]);
   return (
     <div className="contianer ">
       <div className="row p-5">
