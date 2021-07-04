@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
 
 const CompleteRegistration = () => {
+  const { dispatch } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,11 +25,18 @@ const CompleteRegistration = () => {
       );
       if (result.user.emailVerified) {
         // Remove Email From Local Storage
-        window.localStorage.removeItem('emailForRegistration')
+        window.localStorage.removeItem("emailForRegistration");
         let user = auth.currentUser;
-        await user.updatePassword(password)
+        await user.updatePassword(password);
         // Dispatch User With Token
+        const idTokenResult = await user.getIdTokenResult();
+        dispatch({
+          type: "LOGGED_IN_USER",
+          payload: { email: user.email, token: idTokenResult.token },
+        });
+        // make api to save/update user in mongodb
         // Then Redirect
+        history.push('/');
       }
     } catch (error) {
       console.log("register complete error", error.message);
@@ -44,7 +53,7 @@ const CompleteRegistration = () => {
         {loading ? (
           <h4 className="text-danger">Loading...</h4>
         ) : (
-          <h4>Register</h4>
+          <h4>Complete Your Registeration</h4>
         )}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
