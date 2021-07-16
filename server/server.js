@@ -6,6 +6,9 @@ const http = require('http');
 /* .env variables */
 require('dotenv').config();
 
+// IMPORTING HELPERS
+const {authCheck}  = require('./helpers/auth')
+
 /* INCLUDING MONGOOSE */
 const mongoose = require('mongoose');
 // Connecting Db
@@ -38,7 +41,7 @@ const { dirname } = require('path');
 const app = express()
 
 /* Routes */
-app.get('/rest',function (req,res) { 
+app.get('/rest',authCheck,function (req,res) { 
     res.json({
         data:'You Hit rest end point'
     })
@@ -60,7 +63,8 @@ const resolvers = mergeResolvers(loadFilesSync(path.join(__dirname,'./resolvers'
 /* GRAPHQL SERVER INIT*/
 const apolloServer = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    context:({req,res})=>({req,res})
 });
 
 /* MIDDLEWARES */
