@@ -106,3 +106,10 @@ dist
 # CUSTOM IGNORE FILES AND DIRECTORIES
 #./server/.env
 ./server/node_modules
+
+# CONFIG
+./server/config
+
+# MODULES LOCK
+yarn.lock
+package-lock.json
