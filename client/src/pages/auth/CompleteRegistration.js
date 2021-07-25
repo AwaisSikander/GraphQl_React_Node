@@ -20,13 +20,13 @@ const CompleteRegistration = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   let history = useHistory();
-  
+
   useEffect(() => {
     setEmail(window.localStorage.getItem("emailForRegistration"));
   }, [history]);
-  
+
   const [userCreate] = useMutation(USER_CREATE);
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -62,7 +62,7 @@ const CompleteRegistration = () => {
       toast.error(error.message);
     }
   };
-  
+
   return (
     <div className="contianer ">
       <div className="row p-5">

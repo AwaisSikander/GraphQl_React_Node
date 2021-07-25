@@ -3,12 +3,25 @@ import { AuthContext } from "../../context/authContext";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { auth, googleAuthProvider } from "../../firebase";
+import { useMutation, gql } from '@apollo/client';
+
+
+const USER_CREATE = gql`
+  mutation {
+    userCreate {
+      username
+      email
+    }
+  }
+`;
+
 const Login = () => {
     const [email, setEmail] = useState("sikande007@gmail.com");
     const [password, setPassword] = useState("Awais@786");
     const [loading, setloading] = useState(false);
     const { dispatch } = useContext(AuthContext);
     let history = useHistory();
+    const [userCreate] = useMutation(USER_CREATE);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,6 +37,7 @@ const Login = () => {
                         payload: { email: user.email, token: idTokenResult.token },
                     });
                     // send user info to our server to save/update in mongodb
+                    userCreate();
                     // Then Redirect
                     history.push("/");
                 });
@@ -42,6 +56,7 @@ const Login = () => {
                 payload: { email: user.email, token: idTokenResult.token },
             });
             // send user info to our server to save/update in mongodb
+            userCreate();
             // Then Redirect
             history.push("/");
         });
