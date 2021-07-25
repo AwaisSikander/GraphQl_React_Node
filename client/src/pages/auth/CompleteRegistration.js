@@ -3,6 +3,16 @@ import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
+import { useMutation, gql } from '@apollo/client';
+
+const USER_CREATE = gql`
+  mutation {
+    userCreate {
+      username
+      email
+    }
+  }
+`;
 
 const CompleteRegistration = () => {
   const { dispatch } = useContext(AuthContext);
@@ -10,6 +20,13 @@ const CompleteRegistration = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   let history = useHistory();
+  
+  useEffect(() => {
+    setEmail(window.localStorage.getItem("emailForRegistration"));
+  }, [history]);
+  
+  const [userCreate] = useMutation(USER_CREATE);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -35,6 +52,7 @@ const CompleteRegistration = () => {
           payload: { email: user.email, token: idTokenResult.token },
         });
         // make api to save/update user in mongodb
+        userCreate();
         // Then Redirect
         history.push('/');
       }
@@ -44,9 +62,7 @@ const CompleteRegistration = () => {
       toast.error(error.message);
     }
   };
-  useEffect(() => {
-    setEmail(window.localStorage.getItem("emailForRegistration"));
-  }, [history]);
+  
   return (
     <div className="contianer ">
       <div className="row p-5">

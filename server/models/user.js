@@ -21,10 +21,10 @@ const userSchema = new mongoose.Schema({
     },
     images: {
         type: Array,
-        default: {
+        default: [{
             url: "https://via.placeholder.com/150/000000/FFFFFF/?text=Default Image",
             public_id: Date.now
-        }
+        }]
     },
     about: {
         type: String,
