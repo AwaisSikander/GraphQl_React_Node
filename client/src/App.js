@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 // import { MDBBtn } from 'mdb-react-ui-kit';
 import {
   ApolloClient,
@@ -6,6 +6,8 @@ import {
   gql,
   ApolloProvider,
   from,
+  HttpLink,
+  ApolloLink, concat
 } from "@apollo/client";
 /* REACT ROUTER DOM */
 import { Switch, Route } from "react-router-dom";
@@ -16,14 +18,29 @@ import Register from "./pages/auth/Register";
 import CompleteRegistration from "./pages/auth/CompleteRegistration";
 import Login from "./pages/auth/Login";
 import { ToastContainer } from "react-toastify";
-
-
-const client = new ApolloClient({
-  uri: process.env.REACT_APP_GQL_ENDPOINT,
-  cache: new InMemoryCache(),
-});
+import { AuthContext } from "./context/authContext";
 
 const App = () => {
+  const { state } = useContext(AuthContext);
+  const { user } = state;
+  const httpLink = new HttpLink({ uri: process.env.REACT_APP_GQL_ENDPOINT });
+  const authMiddleware = new ApolloLink((operation, forward) => {
+    // add the authorization to the headers
+    operation.setContext(({ headers = {} }) => ({
+      headers: {
+        ...headers,
+        authtoken: user ? user.token : '',
+      }
+    }));
+
+    return forward(operation);
+  })
+  const client = new ApolloClient({
+    // uri: process.env.REACT_APP_GQL_ENDPOINT,
+    cache: new InMemoryCache(),
+    link: concat(authMiddleware, httpLink),
+  });
+
   return (
     <ApolloProvider client={client}>
       <Nav />
