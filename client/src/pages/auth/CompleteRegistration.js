@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import { useMutation, gql } from '@apollo/client';
+import AuthForm from "../../components/forms/AuthForm"
 
 const USER_CREATE = gql`
   mutation {
@@ -71,33 +72,15 @@ const CompleteRegistration = () => {
         ) : (
           <h4>Complete Your Registeration</h4>
         )}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="form-control"
-              placeholder="Enter Email"
-              disabled
-            />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="form-control my-1"
-              placeholder="Enter Password"
-              disabled={loading}
-            />
-          </div>
-          <button
-            className="btn btn-raised btn-primary mt-2"
-            disabled={!email || loading}
-          >
-            Submit
-          </button>
-        </form>
+        <AuthForm
+          email={email}
+          loading={loading}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          handleSubmit={handleSubmit}
+          showPasswordInput={true}
+        />
       </div>
     </div>
   );

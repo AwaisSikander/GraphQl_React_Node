@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { auth, googleAuthProvider } from "../../firebase";
 import { useMutation, gql } from '@apollo/client';
-
+import AuthForm from "../../components/forms/AuthForm"
 
 const USER_CREATE = gql`
   mutation {
@@ -66,36 +66,15 @@ const Login = () => {
         <div className="contianer  p-5">
             {loading ? <h4 className="text-danger">Loading...</h4> : <h4>Login</h4>}
             <button onClick={googleLogin} className="btn btn-danger my-3">Login with google</button>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label>Email Address</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="form-control"
-                        placeholder="Enter email"
-                        disabled={loading}
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Email Address</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="form-control"
-                        placeholder="Enter password"
-                        disabled={loading}
-                    />
-                </div>
-                <button
-                    className="btn btn-raised btn-primary mt-2"
-                    disabled={!email || !password || loading}
-                >
-                    Submit
-                </button>
-            </form>
+            <AuthForm
+                email={email}
+                loading={loading}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+                handleSubmit={handleSubmit}
+                showPasswordInput={true}
+            />
         </div>
     );
 };
