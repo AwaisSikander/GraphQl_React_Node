@@ -29,7 +29,7 @@ const AuthForm = ({ email = "", password = "", loading, setEmail = (f) => f, set
             </div>)}
         <button
             className="btn btn-raised btn-primary mt-2"
-            disabled={!email || loading}
+            disabled={loading}
         >
             Submit
         </button>
