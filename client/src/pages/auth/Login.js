@@ -39,7 +39,7 @@ const Login = () => {
                     // send user info to our server to save/update in mongodb
                     userCreate();
                     // Then Redirect
-                    history.push("/");
+                    history.push("/profile");
                 });
         } catch (error) {
             console.log("Login Error", error);
@@ -58,7 +58,7 @@ const Login = () => {
             // send user info to our server to save/update in mongodb
             userCreate();
             // Then Redirect
-            history.push("/");
+            history.push("/profile");
         });
     };
 

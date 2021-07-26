@@ -55,7 +55,7 @@ const CompleteRegistration = () => {
         // make api to save/update user in mongodb
         userCreate();
         // Then Redirect
-        history.push('/');
+        history.push('/profile');
       }
     } catch (error) {
       console.log("register complete error", error.message);

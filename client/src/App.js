@@ -15,10 +15,14 @@ import { Switch, Route } from "react-router-dom";
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import Register from "./pages/auth/Register";
+import PasswordUpdate from "./pages/auth/PasswordUpdate";
 import CompleteRegistration from "./pages/auth/CompleteRegistration";
 import Login from "./pages/auth/Login";
 import { ToastContainer } from "react-toastify";
 import { AuthContext } from "./context/authContext";
+import PrivateRoute from "./components/PrivateRoute";
+import Post from "./pages/Post/Post"
+import Profile from "./pages/auth/Profile"
 
 const App = () => {
   const { state } = useContext(AuthContext);
@@ -50,6 +54,9 @@ const App = () => {
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/complete-registration" component={CompleteRegistration} />
+        <PrivateRoute exact path="/password/update" component={PasswordUpdate} />
+        <PrivateRoute exact path="/Profile" component={Profile} />
+        <PrivateRoute exact path="/post/create" component={Post} />
       </Switch>
     </ApolloProvider>
   );
