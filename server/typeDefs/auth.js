@@ -2,7 +2,7 @@ const {gql} = require('apollo-server-express');
 
 module.exports = gql` 
     type Query {
-        me: String!
+        profile:User!
     }
     #CUSTOM TYPE
     type Image{
@@ -31,7 +31,6 @@ module.exports = gql`
     #input type
     input UserUpdateInput{
         username:String
-        email:String
         name:String
         images:[ImageInput]
         about:String 
