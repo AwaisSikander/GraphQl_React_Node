@@ -63,7 +63,7 @@ const Login = () => {
     };
 
     return (
-        <div className="contianer  p-5">
+        <div className="contianer p-5">
             {loading ? <h4 className="text-danger">Loading...</h4> : <h4>Login</h4>}
             <button onClick={googleLogin} className="btn btn-danger my-3">Login with google</button>
             <AuthForm
@@ -75,6 +75,7 @@ const Login = () => {
                 handleSubmit={handleSubmit}
                 showPasswordInput={true}
             />
+            <Link className="float-end text-danger" to="/password/forgot">Password Forgot</Link>
         </div>
     );
 };
