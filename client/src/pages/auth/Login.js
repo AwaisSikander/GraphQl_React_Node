@@ -5,15 +5,7 @@ import { toast } from "react-toastify";
 import { auth, googleAuthProvider } from "../../firebase";
 import { useMutation, gql } from '@apollo/client';
 import AuthForm from "../../components/forms/AuthForm"
-
-const USER_CREATE = gql`
-  mutation {
-    userCreate {
-      username
-      email
-    }
-  }
-`;
+import {USER_CREATE} from "../../graphql/mutations"
 
 const Login = () => {
     const [email, setEmail] = useState("sikande007@gmail.com");

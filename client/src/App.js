@@ -42,7 +42,9 @@ const App = () => {
   })
   const client = new ApolloClient({
     // uri: process.env.REACT_APP_GQL_ENDPOINT,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      addTypename: false
+    }),
     link: concat(authMiddleware, httpLink),
   });
 

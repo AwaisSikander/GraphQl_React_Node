@@ -1,24 +1,9 @@
 import React, { useState, useMemo, Fragment } from 'react';
 import { toast } from "react-toastify";
 import { useQuery, useMutation, gql } from "@apollo/client"
-
-const PROFILE = gql`
-    query{
-        profile{
-            _id
-            name
-            username
-            email
-            images{
-                url
-                public_id
-            }
-            about
-            createdAt
-            updatedAt
-        }
-    }
-`;
+import omitDeep from 'omit-deep';
+import {PROFILE} from "../../graphql/queries"
+import {USER_UPDATE} from "../../graphql/mutations"
 
 const Profile = () => {
     const [values, setValues] = useState({
@@ -31,10 +16,12 @@ const Profile = () => {
     const [loading, setLoading] = useState(false);
 
     const { data } = useQuery(PROFILE);
+    
     useMemo(() => {
         if (data) {
             console.log(data.profile)
             setValues({
+                ...values,
                 username: data.profile.username,
                 name: data.profile.name,
                 email: data.profile.email,
@@ -43,16 +30,28 @@ const Profile = () => {
             })
         }
     }, [data])
-    
+
+    // MUTATION HOOK
+    const [userUpdate] = useMutation(USER_UPDATE,{
+        update:({data})=>{
+            console.log("USER UPDATED DATA",data)
+            toast.success("Profile Updated")
+        }
+    });
+
     // DESTRUCTURE    
-    const {username,name,email,about,images} = values;
- 
-    const handleSubmit = () => {
+    const { username, name, email, about, images } = values;
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        userUpdate({variables:{input: values}});
+        setLoading(false);
 
     }
 
-    const handleChange = () => {
-
+    const handleChange = (e) => {
+        setValues({...values,[e.target.name]:e.target.value})
     }
 
     const handleImageChange = () => {
