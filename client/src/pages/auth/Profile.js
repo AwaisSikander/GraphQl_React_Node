@@ -74,7 +74,7 @@ const Profile = () => {
                     100,
                     0,
                     (uri) => {
-                        console.log(uri);
+                        // console.log(uri);
                         axios.post(`${process.env.REACT_APP_REST_ENDPOINT}/uploadimages`, { image: uri }, {
                             headers: {
                                 authtoken: state.user.token
@@ -82,12 +82,12 @@ const Profile = () => {
                         })
                             .then(res => {
                                 setLoading(false);
-                                console.log("CLOUDINARY UPLOAD",res)
-                                setValues({...values,images:[...images,res.data]})
+                                console.log("CLOUDINARY UPLOAD", res)
+                                setValues({ ...values, images: [...images, res.data] })
                             })
                             .catch(err => {
                                 setLoading(false);
-                                console.log('CLOUDINARY UPLOAD FAILED',err)
+                                console.log('CLOUDINARY UPLOAD FAILED', err)
                             })
                     },
                     "base64",
@@ -98,6 +98,26 @@ const Profile = () => {
                 console.log(err);
             }
         }
+    }
+    const handleImageRemove = (id) => {
+        setLoading(false);
+        axios.post(`${process.env.REACT_APP_REST_ENDPOINT}/removeimage`, { public_id: id }, {
+            headers: {
+                authtoken: state.user.token
+            }
+        })
+            .then(res => {
+                setLoading(false);
+                console.log("CLOUDINARY DELETE", res)
+                let filteredImages = images.filter( item =>{
+                    return item.public_id !== id
+                })
+                setValues({ ...values, images: filteredImages })
+            })
+            .catch(err => {
+                setLoading(false);
+                console.log('CLOUDINARY DELETE FAILED', err)
+            })
     }
     const profileUpdateForm = () => (
         <form onSubmit={handleSubmit}>
@@ -135,15 +155,6 @@ const Profile = () => {
                 />
             </div>
             <div className="form-group">
-                <label>Image</label>
-                <input type="file"
-                    className="form-control"
-                    accept="image/*"
-                    onChange={fileResizeAndUpload}
-                    placeholder="Image"
-                />
-            </div>
-            <div className="form-group">
                 <label>About</label>
                 <textarea
                     className="form-control"
@@ -160,6 +171,33 @@ const Profile = () => {
 
     return (
         <div className="container p-5">
+            <div className="row">
+                <div className="col-md-3">
+                    <div className="form-group">
+                        <label className="btn btn-primary" >Upload Image
+                            <input
+                                type="file"
+                                hidden
+                                className="form-control"
+                                accept="image/*"
+                                onChange={fileResizeAndUpload}
+                                placeholder="Image"
+                            />
+                        </label>
+                    </div>
+                </div>
+                <div className="col-md-9">
+                    {images.map((image) => {
+                        return <img
+                            src={image.url}
+                            key={image.public_id}
+                            style={{ height: '100px' }}
+                            className="float-end ms-1"
+                            onClick={() => handleImageRemove(image.public_id)}
+                        />
+                    })}
+                </div>
+            </div>
             {profileUpdateForm()}
         </div>
     )
