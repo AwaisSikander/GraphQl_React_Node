@@ -19,3 +19,18 @@ exports.authCheck = async (req) => {
     throw new Error('invalid or expired token')
   }
 };
+
+exports.authCheckMiddleware = (req, res, next) => {
+  if (req.headers.authtoken) {
+
+    admin.auth().verifyIdToken(req.headers.authtoken).then(
+      result => {
+        next();
+      }
+    ).catch(err => {
+      console.log(err)
+    })
+  }else{
+    res.json({error:'Unauthorized'})
+  }
+}
